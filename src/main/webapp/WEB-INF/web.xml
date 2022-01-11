@@ -8,6 +8,6 @@
     <context-param>
         <description>Choose path to your files</description>
         <param-name>PATH_TO_FILES</param-name>
-        <param-value>../temp</param-value>
+        <param-value>../temp/</param-value>
     </context-param>
 </web-app>

@@ -1,5 +1,7 @@
 package ru.oldjew.repositories;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
+
 import java.util.HashMap;
 import java.util.Map;
 

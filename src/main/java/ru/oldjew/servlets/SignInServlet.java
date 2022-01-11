@@ -1,5 +1,6 @@
 package ru.oldjew.servlets;
 
+import ru.oldjew.Utils.BCryptUtil;
 import ru.oldjew.repositories.User;
 import ru.oldjew.repositories.UsersRepositoryImpl;
 
@@ -10,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 @WebServlet("/signIn")
 public class SignInServlet extends HttpServlet {
@@ -32,7 +32,8 @@ public class SignInServlet extends HttpServlet {
         String password = req.getParameter("password");
         if (usersRepository.getByName(name)!= null){
             User user = usersRepository.getByName(name);
-            if (user.getPassword().equals(password)){
+            //сопоставление введенного пароля и хэшированного пароля
+            if (BCryptUtil.checkHash(password, user)){
                 HttpSession session = req.getSession();
                 session.setAttribute("loginedUser", user);
                 session.setAttribute("role", user.getRole());

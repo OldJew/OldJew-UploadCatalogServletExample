@@ -23,10 +23,11 @@ public class HomeServlet extends HttpServlet {
         String path = req.getServletContext().getInitParameter("PATH_TO_FILES");
         File dir = new File(path);
         List<File> filesList = Arrays.asList(dir.listFiles());
-        if (SecurityUtils.canDownloadOther(req)){
-
-        } else {
+        //если пользователь не зарегистрирован, он может скачивать только .txt файлы, иначе любые
+        if (!SecurityUtils.canDownloadOther(req)){
             filesList =filesList.stream().filter(file -> file.getName().contains(".txt")).collect(Collectors.toList());
+        } else {
+            filesList = Arrays.asList(dir.listFiles());
         }
         PrintWriter writer = resp.getWriter();
         req.setAttribute("filesFromServer",filesList);

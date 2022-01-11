@@ -1,5 +1,6 @@
 package ru.oldjew.servlets;
 
+import ru.oldjew.Utils.BCryptUtil;
 import ru.oldjew.repositories.UsersRepositoryImpl;
 
 import javax.servlet.ServletException;
@@ -27,6 +28,8 @@ public class SignUpServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String userName = req.getParameter("username");
         String password = req.getParameter("password");
+        //генерация хэша
+        password = BCryptUtil.generateHash(password);
         if (usersRepository.saveUser(userName, password, "worker")) {
             req.setAttribute("userByName", usersRepository.getByName(userName));
             resp.sendRedirect(req.getContextPath() + "/home");

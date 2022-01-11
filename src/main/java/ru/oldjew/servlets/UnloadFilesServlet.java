@@ -20,15 +20,18 @@ public class UnloadFilesServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //создание PrintWriter для записи файла
         try(PrintWriter writer = resp.getWriter()){
+            //получение пути к файлу и проверка его существования
             String fileName = req.getParameter("filename");
-            String path = "../temp/" + fileName;
+            String path = req.getServletContext().getInitParameter("PATH_TO_FILES") + fileName;
             File file = new File(path);
             if (file.exists()){
-
+            //передача заголовка ответа
                 resp.setContentType("application/octet-stream");
                 resp.setContentLengthLong(file.length());
                 resp.setHeader("Content-Disposition", "attachment; filename=\"" + file.getName()+"\"");
+                //запись файла пользователю
                 FileInputStream inputStream = new FileInputStream(file);
                 int i;
                 while ((i = inputStream.read()) != -1){
